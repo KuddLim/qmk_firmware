@@ -19,8 +19,8 @@ void process_rgb_matrix_typing_heatmap(uint8_t row, uint8_t col, uint8_t origina
 #        ifdef RGB_MATRIX_TYPING_HEATMAP_SLIM
     // Limit effect to pressed keys
     g_rgb_frame_buffer[row][col] = original ? qadd8(g_rgb_frame_buffer[row][col], 32) : UINT8_MAX;
-    g_rgb_frame_buffer2[row][col] = rand() % UINT8_MAX;   //hue
-    g_rgb_frame_buffer3[row][col] = rand() % UINT8_MAX;
+    g_rgb_frame_buffer2[row][col] = rand() % UINT8_MAX;   // random hue
+    g_rgb_frame_buffer3[row][col] = UINT8_MAX;            // saturation max
 #        else
     if (g_led_config.matrix_co[row][col] == NO_LED) { // skip as pressed key doesn't have an led position
         return;
@@ -33,8 +33,8 @@ void process_rgb_matrix_typing_heatmap(uint8_t row, uint8_t col, uint8_t origina
             }
             if (i_row == row && i_col == col) {
                 g_rgb_frame_buffer[row][col] = original ? qadd8(g_rgb_frame_buffer[row][col], 32) : UINT8_MAX;
-                g_rgb_frame_buffer2[row][col] = rand() % UINT8_MAX;   //hue
-                g_rgb_frame_buffer3[row][col] = rand() % UINT8_MAX;
+                g_rgb_frame_buffer2[row][col] = rand() % UINT8_MAX;   // random hue
+                g_rgb_frame_buffer3[row][col] = UINT8_MAX;            // saturation max
                 //uprintf("rand ? %d\n", rand() & UINT8_MAX);
             } else if (original != 0) {
 #            define LED_DISTANCE(led_a, led_b) sqrt16(((int16_t)(led_a.x - led_b.x) * (int16_t)(led_a.x - led_b.x)) + ((int16_t)(led_a.y - led_b.y) * (int16_t)(led_a.y - led_b.y)))
