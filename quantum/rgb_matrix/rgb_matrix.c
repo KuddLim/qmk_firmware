@@ -110,6 +110,8 @@ rgb_config_t rgb_matrix_config; // TODO: would like to prefix this with g_ for g
 uint32_t     g_rgb_timer;
 #ifdef RGB_MATRIX_FRAMEBUFFER_EFFECTS
 uint8_t g_rgb_frame_buffer[MATRIX_ROWS][MATRIX_COLS] = {{0}};
+uint8_t g_rgb_frame_buffer2[MATRIX_ROWS][MATRIX_COLS] = {{0}};
+uint8_t g_rgb_frame_buffer3[MATRIX_ROWS][MATRIX_COLS] = {{0}};
 #endif // RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #ifdef RGB_MATRIX_KEYREACTIVE_ENABLED
 last_hit_t g_last_hit_tracker;
@@ -251,7 +253,10 @@ void process_rgb_matrix(uint8_t row, uint8_t col, bool pressed) {
 #    endif // defined(RGB_MATRIX_KEYRELEASES)
     {
         if (rgb_matrix_config.mode == RGB_MATRIX_TYPING_HEATMAP) {
-            process_rgb_matrix_typing_heatmap(row, col);
+            process_rgb_matrix_typing_heatmap(row, col, 1);
+        }
+        else if (rgb_matrix_config.mode == RGB_MATRIX_TYPING_HEATMAP_KUDD) {
+            process_rgb_matrix_typing_heatmap(row, col, 0);
         }
     }
 #endif // defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_TYPING_HEATMAP)
@@ -699,6 +704,7 @@ void rgb_matrix_decrease_val(void) {
 void rgb_matrix_set_speed_eeprom_helper(uint8_t speed, bool write_to_eeprom) {
     rgb_matrix_config.speed = speed;
     eeconfig_flag_rgb_matrix(write_to_eeprom);
+    //dprintf("max effect : %d, kudd : %d\n", RGB_MATRIX_EFFECT_MAX, RGB_MATRIX_CUSTOM_KUDD);
     dprintf("rgb matrix set speed [%s]: %u\n", (write_to_eeprom) ? "EEPROM" : "NOEEPROM", rgb_matrix_config.speed);
 }
 void rgb_matrix_set_speed_noeeprom(uint8_t speed) {
